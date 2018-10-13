@@ -1,0 +1,276 @@
+
+
+
+
+var drawArea = new Sprite();
+var details  = new Sprite();
+var scale    = 5;
+var a        = new GeomPoint(300,60, VISIBLE,   DRAGGABLE);
+var b        = new GeomPoint(0,0,     VISIBLE,   DRAGGABLE);
+var c        = new GeomPoint(0,0,     VISIBLE,   DRAGGABLE);
+var wLen     = new Length(b, c, Length.BELOW, "W = ");
+var radPt    = new GeomPoint(0,0);
+var center   = new GeomPoint(0,0, VISIBLE, NON_DRAGGABLE);
+var rLen     = new Length(center, radPt, Length.BELOW, "R = ");
+var radArrow = new Arrow(center, radPt);
+var ht       = new TextObj(0,0,"");
+var w;
+var h;
+var by;
+var radius;
+var prevAY, prevBX, prevCX;
+
+var fTop1, fBot1, f1;
+var oH  = {val:99, decPlaces:1};
+var oW  = {val:88, decPlaces:1};
+var oR  = {val:77, decPlaces:1};
+
+
+
+function build() //called when the shared stuff has done loading
+{ 	var msk =  makeMask(0,0,600,275);
+	drawArea.mask = msk;
+	addChild(msk);
+	addChild(drawArea);
+
+	//add controls
+	addCommands([resetCmd , printCmd, fullCmd, showCmd]);
+
+	with(drawArea)
+	    { addChild(details);
+		  addChild(wLen);
+		  addChild(radArrow);
+		  addChild(rLen);
+		  addChild(ht);
+		  addChild(a);
+		  addChild(b);
+		  addChild(c);
+		  addChild(center);
+	    }
+
+
+    e1 = new Formula("R=$oH/2+$oW^2/{8@times$oH}=$oR", bScale, "formulaLeft");
+    appendToBody(e1.container);
+
+	//set up Hint
+	hint = new Hint(b, Hint.LEFT, "Drag any orange dot");
+	addChild(hint);
+
+    //set up for first time through only
+	animation = "introPause";
+
+    initVals();
+	update();
+
+	//add event listener last.  Frame ticks now start going to animate().
+	startTicking(1, animate);  //happens every frame
+}
+
+
+
+
+function reset() //set up app ready for user interaction
+{
+  initVals();
+  animation = "stopped";
+  graphics.clear();
+  update();
+}
+
+
+function initVals()
+{  w = 140;
+   h = 30;
+
+   by = a.y + h;
+
+   b.x = a.x -w/2;
+   b.y = by;
+
+   c.x = a.x + w/2;
+   c.y = by;
+}
+
+function calcRadius()
+{ var h  = b.y - a.y;
+  var w = c.x - b.x;
+  return (h/2) + (w*w/(h*8));
+}
+
+
+function update()
+{  e1.visible = showingDetails;
+   rLen.showLen = showingDetails;
+
+   a.update();
+   b.update();
+   c.update();
+
+   wLen.scale = scale;
+   wLen.update();
+
+   w = c.x - b.x;
+   h = b.y - a.y;
+   var radius = calcRadius();
+   center.x = a.x;
+   center.y = a.y+radius;
+
+   var arcStart = toDegrees(center.theta(c));
+   var arcAngle = toDegrees(center.theta(b)) - arcStart;
+
+   with(graphics)
+   	{ clear();
+
+	  lineStyle(1,0xffffff ,0);
+	  beginFill(stdFillColor);
+	    drawArc (graphics, center.x, center.y, radius, arcStart, arcAngle);
+	  endFill();
+
+	  lineStyle(1, 0x555555);
+	  drawCircle(center.x, center.y, radius);
+
+	  moveTo(b.x, b.y);
+	  lineTo(c.x, c.y);
+	}
+
+   //Radius arrow
+   var radAng = center.theta(b)+.2;
+   radPt.x = center.x + radius*Math.cos(radAng);
+   radPt.y = center.y - radius*Math.sin(radAng);
+   with(radArrow)
+   	{ ax = center.x;
+	  ay = center.y;
+	  bx = radPt.x;
+	  by = radPt.y;
+	  update();
+	}
+
+   rLen.scale = scale;
+   rLen.update();
+
+   //height
+   var xPos = c.x+20;
+   var ft = 5;
+   with(graphics)
+   	{ lineStyle(1, 0x555555);
+	  moveTo(xPos, a.y);
+	  lineTo(xPos, c.y);
+
+	  moveTo(xPos-ft, c.y);
+	  lineTo(xPos+ft, c.y);
+
+	  moveTo(xPos+ft, a.y);
+	  lineTo(xPos-ft, a.y);
+	}
+
+   with(ht)
+   	{ x = xPos+5;
+	  y = a.y + h/2-10;
+	  text = "h = "+ (h/scale);
+	  update();
+	}
+
+   oH.val = h/scale;
+   oW.val = wLen.len();
+   oR.val = (oH.val/2) + (oW.val*oW.val/(oH.val*8));
+   e1.update();
+
+   prevAY = a.y;
+   prevBX = b.x;
+   prevCX = c.x;
+
+   repaint();
+
+}
+
+
+
+function pointMoved(e)
+{  if(pointBeingMoved == a)
+     { a.x =300;  // vert motion only
+	   if(a.y>by) a.y = by;
+	   if(calcRadius() < b.y-a.y+1) a.y = prevAY;
+	 }
+
+   if(pointBeingMoved == b)
+     { b.y = by; //horiz motion only
+	   if(b.x > a.x-20)  b.x = a.x-20;
+	   if(calcRadius() < b.y-a.y+1) b.x = prevBX;
+	   c.x = a.x+(a.x-b.x);
+	 }
+
+   if(pointBeingMoved == c)
+     { c.y = by;  //horiz motion only
+	   if(c.x < a.x+20)  c.x = a.x+20;
+	   if(calcRadius() < b.y-a.y+1) c.x = prevCX;
+	   b.x = a.x - (c.x-a.x);
+	 }
+
+  update();
+}
+
+
+
+function animStart()  //called when run button pressed
+{ animation = "run";
+}
+
+function animStop()  //called when run button pressed
+{ animation = "stopped";
+}
+
+
+
+var initVal;
+var tgtVal;
+var delta = 5;
+var mover = c;
+function animate(event)  //call every frame tick - 30fps
+{
+  switch(animation)
+	 { case "introPause":
+	        if(timeElapsed(500))
+			   { animation="intro";
+			     initVal = mover.x;
+				 tgtVal = mover.x+70;
+			   }
+			break;
+
+	   case "intro":
+	        mover.x += delta;
+	        movePoint(mover);
+		    if(mover.x >= tgtVal)
+			   { animation="intro2a";
+			   }
+			break;
+
+       case "intro2a":
+	        if(timeElapsed(500))
+			   { animation="intro2";
+			   }
+			break;
+
+	   case "intro2":
+	        mover.x -= delta;
+			movePoint(mover);
+		    if(mover.x <= initVal)
+			   { animation="hintPause";
+			   }
+			break;
+
+	   case "hintPause":
+		    if(timeElapsed(500))
+			  { animation="introdone";
+			    Hint.show();
+				reset();
+				// intro animation done and app is reset,
+				// ready for user interaction
+			  }
+			break;
+
+
+        default: break;
+     }
+}
+
+startApplet();

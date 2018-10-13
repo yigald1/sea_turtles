@@ -1,0 +1,368 @@
+// Conversions "borrowed" from an old GraphCalc script. Author unknown.
+
+function woodUnitsConv(s, outarray) {
+ // Try to figure out units of value in arg string s. If not possible, assume
+ // default units, inches. Convert units and fill caller's output array[7] with
+ // mm val, decimal inch val, html formatted fractional inch val, cm, m, ft,
+ // and unformatted farctional inch. Values are rounded to an appropriate number
+ // of decimal places for woodworking, and standardized units strings are appended.
+ // If any value has been rounded down to zero, and underflow indicator is generated
+ // instead.
+ // Returns null if arg string s is unreasonable, else return units of s.
+
+  //Constants
+ var UNITS = {UNDEFINED: "undefined", MM : "mm", CM : "cm", IN : "in", INF : "inf", M : "m", FT : "ft"};
+ var MMPAT = /\s*(mm|mms|millimeter|millimeters)\s*/i;
+ var CMPAT = /\s*(cm|cms|centimeter|centimeters)\s*/i;
+ var INPAT = /\s*("|”|''|in|inch|inchs)\s*/i;
+ var MPAT = /\s*(m|meter|meters)\s*/i;
+ var FTPAT = /\s*('|ft|fts|foot|feet)\s*/i;
+ var NUMBSPAT = /[^\s0123456789\u2044\u29f8\/\.+-]/;
+ var NEGPAT = /[-]/;
+ var POINTPAT = /[.]/;
+ var INTPAT = /[+-]?[0-9]+/;
+ var NUMERPAT = /[+-]?[0-9]+/;
+ var DENOMPAT = /[+-]?[0-9]+/;
+ var SLASHPAT = /[\u2044\u29f8\/]/;
+ var WHITEPAT = /\s+/;
+ var LEADWHITEPAT = /(^\s*)|(\s*$)/gi;
+ var INTPART = 0;
+ var FRACTPART = 1;
+ var NUMERPART = 0;
+ var DENOMPART = 1;
+ var INSUFFIX = "''";
+ var MMSUFFIX = "mm";
+ var CMSUFFIX = "cm";
+ var MSUFFIX = "m";
+ var FTSUFFIX = "'";
+ var UNDERFLOWS = "--"
+ var MMINDEX = 0;
+ var DIINDEX = 1;
+ var FIINDEX = 2;
+ var CMINDEX = 3;
+ var MINDEX = 4;
+ var FTINDEX = 5;
+ var LFIINDEX = 6;
+ 
+ // Variables
+ var sAr;
+ var fractAr;
+ var hasSign = false;
+ var hasInt = false;
+ var i = 0;
+ var si = 0;
+ var iWhite = 0;
+ var iSlash = 0;
+ var iDenom = 0;
+ var units = UNITS.UNDEFINED;
+ var val = 0.0;
+ var valInt = 0.0;
+ var valFrac = 0.0;
+ var valNumer = 0.0;
+ var valDenom = 0.0;
+ var retvalmm = 0.0;
+ var retvalin = 0.0;
+ var retvalcm = 0.0;
+ var retvalft = 0.0;
+ var retvalm = 0.0;
+
+ // ID units and trim off units suffix if found.
+ i = s.search(MMPAT);
+ if (i != -1) {
+	units = UNITS.MM;
+ } else {
+	i = s.search(CMPAT);
+	if (i != -1) {
+		units = UNITS.CM;
+	} else {
+		i = s.search(INPAT);
+		if (i != -1) {
+			units = UNITS.IN;
+		} else {
+			i = s.search(MPAT);
+			if (i != -1) {
+				units = UNITS.M;
+			} else {
+				i = s.search(FTPAT);
+				if (i != -1) {
+					units = UNITS.FT;
+				} else {
+					units = UNITS.IN;
+					i = s.length;
+				}
+			}
+		}
+	}
+ }
+ s = s.substring(0, i);
+ 
+ // Delete leading whitespace
+ s = s.replace(LEADWHITEPAT,"");
+
+ // Alpha chars and most symbols no longer welcome
+ iWhite = s.search(NUMBSPAT);
+ if (iWhite != -1) {
+	return null;
+ }
+ 
+ // If there is a slsh then there is a fraction
+ iSlash = s.search(SLASHPAT);
+ if (iSlash == -1) {
+	// No fraction here so ...
+	val = parseFloat(s);
+	if (val == NaN) {
+		return null;
+	}
+	iWhite = s.search(WHITEPAT);
+	if (iWhite != -1) {
+		return null;
+	}
+ } else if (units != UNITS.IN) {
+	// Only inches can have fraction
+	return null;
+ } else {
+	// Process for int (optional) and fraction.
+	units = UNITS.INF;
+	sAr = s.split(WHITEPAT, 3);
+	if (sAr.length > 2) {
+		return null;
+	}
+	if (sAr.length == 2) {
+		hasInt = true;
+		i = FRACTPART;
+	} else {
+		hasInt = false;
+		i = INTPART;
+	}
+	fractAr = sAr[i].split(SLASHPAT, 3);
+	if (fractAr.length > 2) {
+		return null;
+	}
+
+	// First numerator.
+	// No decimals.
+	i = fractAr[NUMERPART].search(POINTPAT);
+	if (i != -1) {
+		return null;
+	}
+	i = fractAr[NUMERPART].search(NUMERPAT);
+	if (i == -1) {
+		return null;
+	}
+	valNumer = parseInt(fractAr[NUMERPART].slice(i), 10);
+	if (valNumer == NaN) {
+		return null;
+	}
+	// Check for sign
+	si = fractAr[NUMERPART].search(NEGPAT);
+	if (si != -1) {
+		hasSign = true;
+	} else {
+		hasSign = false;
+	}
+	
+	// Denominator
+	iDenom = fractAr[DENOMPART].search(DENOMPAT);
+	if (iDenom == -1) {
+		return null;
+	}
+	valDenom = parseInt(fractAr[DENOMPART].slice(iDenom), 10);
+	if (valDenom == NaN) {
+		return null;
+	}
+	if (valDenom < 1.0 || valDenom != parseFloat(fractAr[DENOMPART].slice(iDenom))) {
+		return null;
+	}
+
+	//Fraction validity tests
+	if (valNumer >= valDenom){
+		return null;
+	}
+
+	// Integer
+	if (hasInt == true) {
+		if (hasSign == true) {
+			return null;
+		}
+		valInt = parseInt(sAr[INTPART], 10);
+		if (valInt == NaN) {
+			// No integer part
+			valInt = 0*1;
+		}
+	} else {
+		// No integer part
+		valInt = 0*1;
+	}
+	// No sign allowed if the numertor has a sign
+	if (valInt < 0.0 && hasSign == true) {
+		return null;
+	}
+	if (hasInt == true) {
+		if (valInt != parseFloat(sAr[INTPART])) {
+			return null;
+		}
+	}
+	if (valInt >= 0) {
+		val = valInt + (valNumer / valDenom);
+	} else {
+		val = valInt - (valNumer / valDenom);
+	}
+ }
+ // alert("val: " + val + " Int: " + valInt + " Numer: " + valNumer + " Denom: " + valDenom);
+ 
+ // Convert, round and return
+ switch (units) {
+ case UNITS.MM:
+	retvalmm = val;
+	retvalin = val / 25.4;
+	retvalcm = val / 10;
+	retvalm = val / 1000;
+	retvalft = retvalin / 12;
+	break;
+ case UNITS.CM:
+	retvalmm = val * 10.0;
+	retvalin = retvalmm / 25.4;
+	retvalcm = val;
+	retvalm = val / 100;
+	retvalft = retvalin / 12;
+	break;
+ case UNITS.IN:
+ case UNITS.INF:
+	retvalmm = val * 25.4;
+	retvalin = val;
+	retvalcm = retvalmm / 10;
+	retvalm = retvalmm / 1000;
+	retvalft = retvalin / 12;
+	break;
+ case UNITS.M:
+	retvalmm = val * 1000;
+	retvalin = retvalmm / 25.4;
+	retvalcm = val * 100;
+	retvalm = val;
+	retvalft = retvalin / 12;
+	break;
+ case UNITS.FT:
+	retvalmm = val * 12 * 25.4;
+	retvalin = val * 12;
+	retvalcm = retvalmm / 10;
+	retvalm = retvalmm / 1000;
+	retvalft = val;
+	break;
+ default:
+	alert("fatal error: no type");
+ }
+ 
+ val = (Math.round(retvalmm * 100) / 100);
+ if ((val * 1) == 0) {
+	val = UNDERFLOWS;
+ }
+ outarray[MMINDEX] = val + MMSUFFIX;
+ val = (Math.round(retvalin * 1000) / 1000);
+  if ((val * 1) == 0) {
+	val = UNDERFLOWS;
+ }
+ outarray[DIINDEX] = val + INSUFFIX;
+ outarray[FIINDEX] = float2vulgar(retvalin, UNDERFLOWS) + INSUFFIX;
+ outarray[LFIINDEX] = s + INSUFFIX;
+ val = (Math.round(retvalcm * 1000) / 1000);
+  if ((val * 1) == 0) {
+	val = UNDERFLOWS;
+ }
+ outarray[CMINDEX] = val + CMSUFFIX;
+ val = (Math.round(retvalm * 10000) / 10000);
+  if ((val * 1) == 0) {
+	val = UNDERFLOWS;
+ }
+ outarray[MINDEX] = val + MSUFFIX;
+ val = (Math.round(retvalft * 100) / 100);
+  if ((val * 1) == 0) {
+	val = UNDERFLOWS;
+ }
+ outarray[FTINDEX] = val + FTSUFFIX;
+ 
+ return units; 
+ 
+} // function woodUnitsConv()
+
+
+function float2vulgar(x, underflows) {
+ // Convert arg to string containing integer and vulgar fraction
+ // along with appropriate HTML for display. Fraction is in woodworking
+ // convention and rounded to the nearest 1/64th. If value is < 1/64th,
+ // caller's underflow string is substituted.
+ 
+ // Constants
+ var INITDENOM = 64;
+ var INCREM = 1 / INITDENOM;
+ var ROUND = INCREM / 2;
+ 
+ // Variables
+ var isNeg = false;
+ var intpart = 0;
+ var fracpart = 0.0;
+ var count = 0;
+ var numer = 0;
+ var denom = 0;
+ var tmp = 0;
+ var s = '';
+ 
+ if (x < 0.0) {
+	isNeg = true;
+	x = Math.abs(x);
+ } else {
+	isNeg = false;
+ }
+ intpart = Math.floor(x);
+ fracpart = x - intpart;
+ 
+ // Calc count of increment values by successive approximation
+ count = 0;
+ numer = INITDENOM / 2;
+ while (fracpart >= ROUND) {
+	if (fracpart >= numer / INITDENOM) {
+		count += numer;
+		fracpart -= (numer / INITDENOM);
+	}
+	if (fracpart < INCREM && fracpart >= ROUND) {
+		count++;
+		fracpart -= INCREM;
+	}
+	numer = numer / 2;
+ }
+ if (count == INITDENOM) {
+	count = 0;
+	intpart++;
+ }
+ 
+ // Reduce fraction
+ numer = count;
+ denom = INITDENOM;
+ while (numer > 0) {
+	tmp = numer / 2;
+	if (tmp == Math.floor(tmp)) {
+		numer = numer / 2;
+		denom = denom / 2;
+	} else {
+		break;
+	}
+ }
+ 
+ // Format output
+ s = '';
+ if (isNeg == true) {
+	s += '-';
+ }
+ if (intpart > 0) {
+	s += intpart;
+ }
+ if (numer > 0) {
+	s = s + "<sup><span style='font-size: 60%'>&nbsp;" + numer + "</span></sup>&frasl;<span style='font-size: 60%'>" + denom + "</span>";
+ }
+ if (s == '') {
+	s = underflows;
+ }
+  
+ return s;
+ 
+} // function float2vulgar()
+

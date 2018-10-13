@@ -1,0 +1,89 @@
+// Reformat inch vulgar fractions as stacked. Reformats other
+// linear dimensions, but mostly by standardizing the units
+// suffix. In addition to the reformatting, the standardized
+// strings are stored in a new attribute for use by the tooltip
+// units converter.
+// Dimension values should appear in spans of class dim, as
+// per example:
+//
+// <span class="dim">3 27/64''</span>
+//
+// This file should be included after all other HTML is loaded.
+	
+var dimArray=document.getElementsByClassName("dim");
+for (var elem in dimArray) {
+	var s = dimArray[elem].innerHTML;
+	var orig = new Array(1);
+	dimArray[elem].innerHTML = dimReformat(s, orig);
+	dimArray[elem].setAttribute("orig-dim", orig[0]);
+}
+	
+function dimReformat(s, orig) {
+
+	var output = new Array(7);
+	var units = woodUnitsConv(s, output);
+	switch (units) {
+	case null:
+	case "undefined":
+		orig[0] = "";
+		return null;
+	case "mm":
+		orig[0] = output[0];
+		return (output[0]);
+	case "cm":
+		orig[0] = output[3];
+		return (output[3]);
+	case "in":
+		orig[0] = output[1];
+		return (output[1]);
+	case "inf":
+		orig[0] = output[6];
+		return (output[2]);
+	case "m":
+		orig[0] = output[4];
+		return (output[4]);
+	case "ft":
+		orig[0] = output[5];
+		return (output[5]);
+	default:
+		orig[0] = "";
+		return null;
+	}
+	
+} // function dimReformat()
+
+function dimToolTip(s) {
+	
+	var output = new Array(7);
+	var units = woodUnitsConv(s, output);
+	switch (units) {
+	case null:
+	case "undefined":
+		return "?";
+	case "mm":
+		return (output[0] + ' = ' + output[1] + ' = ' + output[2]);
+	case "cm":
+		return (output[3] + ' = ' + output[0] + ' = ' + output[1] + ' = ' + output[2]);
+	case "in":
+		if (output[1] != output[2]) {
+			return (output[1] + ' = ' + output[0] + ' = ' + output[2]);
+		} else {
+			return (output[1] + ' = ' + output[0]);
+		}
+	case "inf":
+		if (output[1] != output[2]) {
+			return (output[2] + ' = ' + output[0] + ' = ' + output[1]);
+		} else {
+			return (output[2] + ' = ' + output[0]);
+		}
+	case "m":
+		return (output[4] + ' = ' + output[5]);
+	case "ft":
+		return (output[5] + ' = ' + output[4]);
+	default:
+		return null;
+	}
+
+} // function dimToolTip()
+
+

@@ -1,0 +1,416 @@
+
+body {
+  font-family: Verdana,Arial,Helvetica,sans-serif;
+  background-image: url('/GreenTexture.png');
+  background-repeat: repeat;
+  font-size: 1em;
+  max-width: 1000px;
+  min-width: 700px;
+  margin-left: 2em;
+}
+a {
+  color: #5B3533;
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #253;
+  text-decoration: underline;
+}
+
+blockquote {
+  border-top: 1px solid #999999;
+  border-bottom: 1px solid #999999;
+  margin: 1em 18em 1em 1em;
+  padding: 0.5em;
+  font-size: 0.9em;
+  background-color: #cccccc;
+}
+blockquote p {
+  margin: 0.2em;
+}
+#page {
+  background-image: url(/White2Texture.png);
+  box-shadow: 5px 5px rgba(0,0,0,0.5);
+  margin: 5px;
+  padding: 0;
+  border: 1px solid #4c1900;
+  color: #222222;
+}
+#header {
+  font-family: Georgia,'Times New Roman', Times, serif;
+/*  1em = 1.2%
+*/
+  border: 1px solid #eeeeee;
+  margin: 1.2% 2.4% 0;
+  padding: 0.6%;
+  height: 525%;
+  background-color: #492449;
+  background-image: url(/RedTexture.png);
+  min-width: 40%;
+  box-shadow: 5px 5px rgba(0,0,0,0.5);
+}
+html > body #header {
+  margin-left: 2.7%;
+  margin-right: 2.7%;
+}
+#headerBlock {
+	display: inline-block;
+}
+#header h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 250%;
+  color: #eeeeee;
+  font-style: italic;
+  font-weight: bold;
+  text-shadow:1px 1px 0 #625651,
+	-1px -1px 0 #625651,
+	1px -1px 0 #625651,
+	-1px 1px 0 #625651,
+	0px 1px 0 #625651,
+	1px 0px 0 #625651,
+	0px -1px 0 #625651,
+	-1px 0px 0 #625651,
+	4px 4px 3px #000;
+}
+#header h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  color: #eeeeee;
+  font-style: italic;
+  font-weight: bold;
+}
+#header h3 {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  color: #eeeeee;
+  font-style: italic;
+  font-weight: bold;
+  text-align: right;
+}
+#header a {
+  text-decoration: none;
+}
+#centerColumn {
+  padding: 1em 0.5em 2em;
+  right: 2.25em;
+  margin-top: 0.2em;
+  voice-family: inherit;
+  margin-left: 2.25em;
+  margin-right: 2.25em;
+  font-size: 1em;
+  line-height: 150%;
+}
+html > body #centerColumn {
+  margin-left: 2.25em;
+  margin-right: 2.25em;
+}
+#centerColumn h1 {
+  font-family: Georgia,'Times New Roman', Times, serif;
+  margin: 0;
+  padding: 0;
+  font-size: 2em;
+  font-style: italic;
+  font-weight: bold;
+  text-align: center;
+  color: #330000;
+  line-height: 120%;
+}
+#centerColumn h2 {
+  font-family: Georgia,'Times New Roman', Times, serif;
+  margin: 2em 0 0 0;
+  padding: 0;
+  font-size: 1.5em;
+  letter-spacing: 0.1em;
+  color: #330000;
+  font-weight: bold;
+  font-style: italic;
+  text-align: left;
+}
+#centerColumn h3 {
+  font-family: Georgia,'Times New Roman', Times, serif;
+  padding: 0;
+  font-size: 1.1em;
+  letter-spacing: 0.1em;
+  color: #330000;
+  font-weight: bold;
+  font-style: italic;
+  display: inline;
+}
+#centerColumnBox {
+  border: 1px solid #4c1900;
+  margin: 2em 0 0 0;
+  padding: 0.7em;
+  font-size: 1em;
+  width: 200px;
+}
+#centerColumnFormulaBox {
+  background: #cdd8d2;
+  background-image: url(/gp.gif);
+  background-repeat: repeat;
+  border: 1px solid #4c1900;
+  margin: 2em 0 0 0;
+  padding: 0.7em;
+  font-size: 1em;
+  width: 350px;
+}
+#centerColumnFormulaBox h3 {
+  font-family: Georgia,'Times New Roman', Times, serif;
+  padding: 0;
+  font-size: 1.1em;
+  letter-spacing: 0.1em;
+  color: #330000;
+  font-weight: bold;
+  font-style: italic;
+  display: block;
+  text-align: center;
+}
+#centerColumnBox h2 {
+  margin: 0 0 0 0;
+  padding: 0;
+  font-size: 1.5em;
+  letter-spacing: 0.1em;
+  font-weight: bold;
+  font-style: italic;
+  text-align: left;
+}
+#centerColumnBlock {
+  margin: 0 0 2em 0;
+  max-width: 675px;
+}
+#reprintBox {
+  border: 1px solid #4c1900;
+  margin: 0 0 0 0em;
+  padding: 2em;
+  background-color: #eeeeee;
+  font-size: 1em;
+  line-height: 110%;
+  width: 550px;
+}
+#reprintBox h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.5em;
+  font-weight: bold;
+  font-style: normal;
+  text-align: center;
+  color: black;
+  line-height: 120%;
+}
+#reprintBox h2 {
+  margin: 2em 0 0 0;
+  padding: 0;
+  font-size: 1.25em;
+  letter-spacing: 0.1em;
+  color: black;
+  font-weight: bold;
+  font-style: normal;
+  text-align: left;
+}
+#reprintBox h3 {
+  padding: 0;
+  font-size: 1em;
+  letter-spacing: 0.1em;
+  color: black;
+  font-weight: bold;
+  font-style: normal;
+  display: inline;
+}
+#reprintBoxBox {
+  border: 1px solid black;
+  margin: 1em 1em 1em 1em;
+  padding: 0em;
+  float: right;
+  font-size: 0.75em;
+  font-weight: bold;
+  color: black;
+  line-height: 100%;
+}
+#captPictBox {
+  width: 259px; 
+  border: 1px solid #4c1900; 
+  padding: 0.4em; 
+  float: right; 
+  font-size: 0.75em; 
+  font-style: italic; 
+  line-height: 110%; 
+  margin: 2em 0 2em 1em;
+}
+#CCLicBox {
+  border: 1px solid #4c1900;
+  margin: 0 0 0 0em;
+  padding: 2em;
+  background-color: #eeeeee;
+  font-size: x-small;
+  line-height: 110%;
+  width: 350px;
+  min-width: 350px;
+}
+img.oldPhoto {
+  float: right;
+  border: 1em solid white;
+  margin: 1em 0 1em 1em;
+  }
+img.right {
+  float: right;
+  margin: 0 0 1em 1em;
+  }
+img.rightBorder {
+  float: right;
+  margin: 0 0 1em 1em;
+  border: 1px solid black;
+  }
+img.left {
+  float: left;
+  margin: 0 1em 1em 0;
+  }
+img.inline {
+  margin: 1em 0 1em 0;
+  }
+img.inlineNewWindow {
+  margin: 1em 0 0 0;
+  }
+img.inlineBorder {
+  margin: 1em 0 1em 0;
+  border: 1px solid black;
+  }
+span.formula {
+  font-family: Times,serif;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 120%;
+  }
+div.clearer {
+  clear: right;
+  line-height: 0;
+  height: 0;
+  }
+#rightColumn {
+  margin: 0 0 0 0;
+  float: right;
+  width: 240px;
+  line-height: 100%;
+}
+#navPanel {
+  box-shadow: 5px 5px rgba(0,0,0,0.5);
+  border-radius: 10px;
+  border: 1px solid #4c1900;
+  background-color: #625651;
+  text-decoration: none;
+  background-image: url(/TanTexture.png);
+  margin: 1em 0 0 20px;
+  padding: 1em 5px 2em 5px;
+  float: right;
+}
+#rightColumnBox {
+  border-radius: 10px;
+  border: 1px solid #4c1900;
+  margin: 0 0 0 0;
+  padding: 0.7em;
+  float: right;
+  background-color: #eeeeee;
+  font-size: 0.7em;
+  width: 200px;
+}
+#rightColumn h2 {
+  margin: 0 0 -1em;
+  padding: 0;
+  font-size: 1em;
+  color: #330000;
+  font-weight: bold;
+}
+#rightColumn ul {
+  background-color: #eeeeee;
+}
+#rightColumn li {
+  background-color: #eeeeee;
+}
+/* #rightColumn li a {
+  margin: 0 0 0 0.2em;
+  color: #cc0000;
+  text-decoration: none;
+}
+#rightColumn li a:hover {
+  color: #cc0000;
+  text-decoration: underline;
+} */
+#rightColumn a {
+  margin: 0 0 0 0.2em;
+  color: #5B3533;
+  text-decoration: none;
+}
+#rightColumn a:hover {
+  color: #cc0000;
+  background-color: #eeeeee;
+  text-decoration: underline;
+}
+#tags {
+  border: none;
+  margin: 0 0 0.5em;
+  width: 10em;
+  float: left;
+  text-align: left;
+}
+#tags img {
+  border: none;
+}
+#tags p {
+  margin: 0 0 0.25em;
+}
+#tags a {
+  font-size: 0.8em;
+  color: #5B3533;
+}
+#footer {
+  font-family: Georgia,'Times New Roman', Times, serif;
+  border: 1px solid #eeeeee;
+  margin: 0.2em 2.85em 2em;
+  padding: 1em 0.5em;
+  background: #492449 none repeat scroll 0% 50%;
+  background-image: url(/RedTexture.png);
+  right: 2.85em;
+  voice-family: inherit;
+  font-size: 0.7em;
+  text-align: center;
+  color: #eeeeee;
+}
+.invisibleFooterText {
+  color: #492449;
+  color: rgba(255, 255, 255, 0);
+}
+#menubar {
+  font-family: Verdana,Arial,Helvetica,sans-serif;
+  border-top: 1px solid #9b5a58;
+  border-bottom: 1px solid #9b5a58;
+  margin: 0.2em 2.85em 0px 2.85em;
+  padding: 0em 0em 0 0;
+  right: 2.85em;
+  font-size: 0.7em;
+  color: #9b5a58;
+}
+#menubar a {
+  color: #9b5a58;
+  text-decoration: none;
+}
+html > body #footer {
+  margin-left: 2.85em;
+  margin-right: 2.85em;
+}
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.clearfix {
+}
+* html .clearfix {
+  height: 1%;
+}
+.clearfix {
+  display: block;
+}
