@@ -1,9 +1,0 @@
-$(document).ready(function(){	
-	// treeview sitemap
-	$("#navigation").treeview({
-		animated: "fast",
-		persist: "cookie",
-		collapsed: true,
-		unique: true
-	});
-});
