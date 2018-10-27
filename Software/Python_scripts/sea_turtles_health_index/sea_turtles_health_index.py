@@ -23,11 +23,20 @@ class Sea_turtles(object):
                             'time_spent_group', 'last_activity', 'last_activity_start_date', 'last_activity_end_date',
                             'total_time_spent']
 
+
+
+
+
+
+
+
+
         self._keys_pos = [0, 1, 2, 6, 7, 13, 12, 19, 37, 38, 39, 40]     # position of keys in input record
-        self._rechivim_dichotomic = [0, 0, 0, 0, 0]     # 1 for 0/1 rechiv (no standardization performed), 0 for regular numeric rechiv
-        self._rechivim_sign = [-1, -1, 1, 1, 1]        # injury severity, time spent, age, width, weight
-        self._weights_general = [40, 30, 15, 5, 10]     # injury severity, time spent, age, width, weight
-        self._rechiv_short_name = ['is', 'ts', 'ca', 'wd', 'wt']  # injury severity, time spent, age, width, weight
+        self._rechivim_dichotomic = [0, 0, 0, 0, 0]    # 1 for 0/1 rechiv (no standardization performed), 0 for regular numeric rechiv
+        self._rechivim_sign = [-1, -1, -1, -1, -1]     # injury severity, time spent, age, width, weight
+        #self._weights_general = [40, 30, 10, 10, 10]   # injury severity, ccla by weight, scla by scw, ccl_a by ccw, ccw by weight
+        self._weights_general = [0, 0, 0, 0, 100]  # injury severity, ccla by weight, scla by scw, ccl_a by ccw, ccw by weight
+        self._rechiv_short_name = ['is', 'ccla_wt', 'scla_scw', 'ccla_ccw', 'ccw_wt']  # injury severity, ccla by weight, scla by scw, ccla by ccw, ccw by weight
         self.sea_turtles_workbook = self._open_sea_turtles_workbook(self, sea_turtles_file_name)
         self._injury_severity = self._open_injury_severity(self)
         self._currently_in_center = self._open_currently_in_center(self)
@@ -71,11 +80,11 @@ class Sea_turtles(object):
                 for col in range(s.ncols):
                     line.append(s.cell(row, col).value)
                 validated_injury_severity = self._validate_injury_severity(self, line[10], _injury_severity)
-                validated_time_spent = self._validate_time_spent(self, line[0], line[7], line[40], _currently_in_center)
-                validated_age = self._validate_age(self, line[13])
-                validated_width = self._validate_width(self, line[19])
-                validated_weight = self._validate_weight(self, line[12])
-                line.extend((validated_injury_severity, validated_time_spent, validated_age, validated_width, validated_weight))
+                validated_ccla_wt = self._validate_ccla_wt(self, line[13], line[12])
+                validated_scla_scw = self._validate_scla_scw(self, line[20], line[25])
+                validated_ccla_ccw = self._validate_ccla_ccw(self, line[13], line[19])
+                validated_ccw_wt = self._validate_ccw_weight(self, line[19], line[12])
+                line.extend((validated_injury_severity, validated_ccla_wt, validated_scla_scw, validated_ccla_ccw, validated_ccw_wt))
                 sea_turtles_data.append(line)
         del sea_turtles_data[0]
 
@@ -89,34 +98,43 @@ class Sea_turtles(object):
             return None
 
     @staticmethod
-    def _validate_time_spent(self, id_no, activity_start_date, time_spent, currently_in_center):
+    def _validate_ccla_wt(self, ccla, weight):
 
-         if time_spent > 0:
-            return time_spent
-         else:
-            if id_no in currently_in_center:
-                return (datetime.now() - datetime(1900, 1, 1)).days - activity_start_date
+        if type(ccla) == float and type(weight) == float:
+            if ccla > 0 and weight > 0:
+                return ccla/weight
             else:
                 return None
-
-    @staticmethod
-    def _validate_age(self, ccl_a):
-        if type(ccl_a) == float:
-            return ccl_a
         else:
             return None
 
     @staticmethod
-    def _validate_width(self, ccw):
-        if type(ccw) == float:
-            return ccw
+    def _validate_scla_scw(self, scla, scw):
+        if type(scla) == float and type(scw) == float:
+            if scla > 0 and scw > 0:
+                return scla/scw
+            else:
+                return None
         else:
             return None
 
     @staticmethod
-    def _validate_weight(self, weight):
-        if type(weight) == float:
-            return weight
+    def _validate_ccla_ccw(self, ccla, ccw):
+        if type(ccla) == float and type(ccw) == float:
+            if ccla > 0 and ccw > 0:
+                return ccla/ccw
+            else:
+                return None
+        else:
+            return None
+
+    @staticmethod
+    def _validate_ccw_weight(self, ccw, weight):
+        if type(ccw) == float and type(weight) == float:
+            if ccw > 0 and weight > 0:
+                return ccw/weight
+            else:
+                return None
         else:
             return None
 
@@ -172,7 +190,8 @@ class Sea_turtles(object):
                     if rechivim_source[st_idx][rechiv_idx] is None:
                         curr_standardized_rechivim.append(None)
                     else:
-                        curr_standardized_rechivim.append((rechivim_source[st_idx][rechiv_idx] - rechivim_avg[rechiv_idx]) / rechivim_std[rechiv_idx])
+                        curr_standardized_rechivim.append(abs((rechivim_source[st_idx][rechiv_idx] - rechivim_avg[rechiv_idx]) / rechivim_std[rechiv_idx]))
+                        # curr_standardized_rechivim.append((rechivim_source[st_idx][rechiv_idx] - rechivim_avg[rechiv_idx]) / rechivim_std[rechiv_idx])
             standardized_rechivim.append(copy.copy(curr_standardized_rechivim))
             del curr_standardized_rechivim[:]
         del standardized_rechivim[0]
@@ -217,7 +236,7 @@ class Sea_turtles(object):
         # calculate madad based on individual weights
         for i, rechiv in enumerate(rechivim):
             if weights_individual[i] > 0:
-                madad += rechivim[i] * self._rechivim_sign[i] * weights_individual[i] / weights_denominator
+                madad += abs(rechivim[i] * self._rechivim_sign[i] * weights_individual[i] / weights_denominator)
         sea_turtle.append(madad)
 
         return sea_turtle
@@ -255,7 +274,7 @@ class Sea_turtles(object):
             for j, sea_turtle_field in enumerate(sea_turtle_line):
                 ma.write(i + 1, j, sea_turtle_field)
 
-        xl_file_name = 'd:\seaturtles\data\SeaTurtles_'
+        xl_file_name = 'd:\seaturtles\data\SeaTurtles_abs_'
         for i, rechiv in enumerate(self._weights_general):
             xl_file_name += self._rechiv_short_name[i] + str(rechiv)
         xl_file_name += '.xls'
@@ -267,7 +286,7 @@ class Sea_turtles(object):
 
         del wbwt
         wbwt = xlwt.Workbook(encoding='utf-8')
-        ma_currently_in_center = wbwt.add_sheet('mdd_assiron_currently_in_center')
+        ma_currently_in_center = wbwt.add_sheet('mdd_assiron_in_center')
 
         for col_header_idx, col_header in enumerate(self._keys_pos):
             ma_currently_in_center.write(0, col_header_idx, self.col_headers[self._keys_pos[col_header_idx]])
@@ -282,7 +301,7 @@ class Sea_turtles(object):
                     ma_currently_in_center.write(row_out, j, sea_turtle_field)
                 row_out += 1
 
-        xl_file_name = 'd:\seaturtles\data\SeaTurtles_in_center_'
+        xl_file_name = 'd:\seaturtles\data\SeaTurtles_in_center_abs_'
         for i, rechiv in enumerate(self._weights_general):
             xl_file_name += self._rechiv_short_name[i] + str(rechiv)
         xl_file_name += '.xls'
