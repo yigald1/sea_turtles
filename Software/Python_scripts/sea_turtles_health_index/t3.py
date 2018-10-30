@@ -49,9 +49,9 @@ for activity_type in activity_types:
 
 # cursor.execute('select EventID, EventDate, EventTurtleID, EventActivityID from TurtleEvent te' +
 #                'join Turtle tu on(te.EventTurtleID = tu.TurtleID')
-tables_rows = []
+table_rows = []
 for row in cursor:
-    tables_rows.append(row)
+    table_rows.append(row)
 
 # for row in cursor.fetchall():
 #     print(row)

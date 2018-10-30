@@ -5,6 +5,7 @@ import statistics
 import numpy
 import time
 import copy
+import pyodbc
 
 
 class Sea_turtles(object):
@@ -22,15 +23,6 @@ class Sea_turtles(object):
                             'track_w_min', 'track_w_max', 'clutch_id', 'activity_end_date', 'time_spent',
                             'time_spent_group', 'last_activity', 'last_activity_start_date', 'last_activity_end_date',
                             'total_time_spent']
-
-
-
-
-
-
-
-
-
         self._keys_pos = [0, 1, 2, 6, 7, 13, 12, 19, 37, 38, 39, 40]     # position of keys in input record
         self._rechivim_dichotomic = [0, 0, 0, 0, 0]    # 1 for 0/1 rechiv (no standardization performed), 0 for regular numeric rechiv
         self._rechivim_sign = [-1, -1, -1, -1, -1]     # injury severity, time spent, age, width, weight
@@ -44,6 +36,13 @@ class Sea_turtles(object):
         self._sea_turtles_data_standardized = self._standardize_rechivim(self)
         self._sea_turtles_mdd = self._prepare_madad_list(self._sea_turtles_data_standardized)
         self._prepare_sea_turtles_output()
+
+    # @staticmethod
+    # def _open_sea_turtles_workbook(self, sea_turtles_file_name):
+    #
+    #     wb = open_workbook(sea_turtles_file_name)
+    # 
+    #     return wb
 
     @staticmethod
     def _open_sea_turtles_workbook(self, sea_turtles_file_name):
