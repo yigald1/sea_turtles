@@ -9,7 +9,7 @@ import pyodbc
 
 
 class Sea_turtles(object):
-    def __init__(self, sea_turtles_file_name):
+    def __init__(self, db_name, user, password):
         self._species = ['Caspian Turtle', 'Chinese Soft Shell Turtle', 'Green Turtle', 'Hawksbill Turtle',
                          'Leatherback', 'Loggerhead', 'Nile Softshell', 'Other', 'Red Ear Slider',
                          'Unidentified Terapin', 'Unidentified Turtle']
@@ -23,42 +23,23 @@ class Sea_turtles(object):
                             'track_w_min', 'track_w_max', 'clutch_id', 'activity_end_date', 'time_spent',
                             'time_spent_group', 'last_activity', 'last_activity_start_date', 'last_activity_end_date',
                             'total_time_spent']
-        self._keys_pos = [0, 1, 2, 6, 7, 13, 12, 19, 37, 38, 39, 40]     # position of keys in input record
+        self._keys_pos = [0, 1, 4, 13, 14]     # position of keys in input record
         self._rechivim_dichotomic = [0, 0, 0, 0, 0]    # 1 for 0/1 rechiv (no standardization performed), 0 for regular numeric rechiv
         self._rechivim_sign = [-1, -1, -1, -1, -1]     # injury severity, time spent, age, width, weight
-        #self._weights_general = [40, 30, 10, 10, 10]   # injury severity, ccla by weight, scla by scw, ccl_a by ccw, ccw by weight
-        self._weights_general = [0, 0, 0, 0, 100]  # injury severity, ccla by weight, scla by scw, ccl_a by ccw, ccw by weight
-        self._rechiv_short_name = ['is', 'ccla_wt', 'scla_scw', 'ccla_ccw', 'ccw_wt']  # injury severity, ccla by weight, scla by scw, ccla by ccw, ccw by weight
-        self.db_cursor = self._open_sea_turtles_workbook(self, sea_turtles_file_name)
-        tables_all = self.db_cursor.tables().fetchall()
-        tables = []
-        for table in tables_all:
-            if table[3] == 'TABLE' and table[2] not in ('ZZZproblems', 'עותק של  TurtleEvent'):
-                # 'עותק של  TurtleEvent'
-                tables.append(table[2])
-        self._injury_severity = self._open_injury_severity(self)
-        self._currently_in_center = self._open_currently_in_center(self)
-        self._sea_turtles_data = self._read_sea_turtles_worksheet(self, self._injury_severity, self._currently_in_center)
+        self._weights_general = [100, 0, 0, 0, 0]  # weight by ccl_a_square
+        self._rechiv_short_name = ['wt_ccla2', 'ccla_wt', 'scla_scw', 'ccla_ccw', 'ccw_wt']  # injury severity, ccla by weight, scla by scw, ccla by ccw, ccw by weight
+        self._db_cursor = self._open_sea_turtles_db(self, db_name, user, password)
+        # self._injury_severity = self._open_injury_severity(self)
+        # self._currently_in_center = self._open_currently_in_center(self)
+        self._sea_turtles_data = self._read_sea_turtles_db(self)
         self._sea_turtles_data_standardized = self._standardize_rechivim(self)
         self._sea_turtles_mdd = self._prepare_madad_list(self._sea_turtles_data_standardized)
         self._prepare_sea_turtles_output()
 
-    # @staticmethod
-    # def _open_sea_turtles_workbook(self, sea_turtles_file_name):
-    #
-    #     wb = open_workbook(sea_turtles_file_name)
-    #
-    #     return wb
-
     @staticmethod
-    def _open_sea_turtles_workbook(self, sea_turtles_file_name):
-
-        db_file = r'''d:\SeaTurtles\db\TurtlesDB_be.mdb'''
-        user = 'admin'
-        password = ''
-
+    def _open_sea_turtles_db(self, db_name, user, password):
         odbc_conn_str = 'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=%s;UID=%s;PWD=%s' % (
-        db_file, user, password)
+        db_name, user, password)
         conn = pyodbc.connect(odbc_conn_str)
         cursor = conn.cursor()
 
@@ -83,21 +64,45 @@ class Sea_turtles(object):
         return currently_in_center
 
     @staticmethod
-    def _read_sea_turtles_worksheet(self, _injury_severity, _currently_in_center):
-        s = self.sea_turtles_workbook.sheet_by_name('DataForAnalysis')
+    def _read_sea_turtles_db(self):
+        activity_type = 2  # 2 - brought in alive
+        sql_str = 'SELECT * FROM (' + \
+                  'SELECT te.EventTurtleID, tu.TurtleName, tu.SpecieId, tu.TurtleGender, sp.SpecieNameEng, ' + \
+                  'First(te.EventDate) as first_event_date, First(we.Weight) as first_weight, ' + \
+                  'First(we.[CCL-a]) as first_CCL_a, First(we.[CCW]) as first_CCW, ' + \
+                  'First(we.[SCL-a]) as first_SCL_a, First(we.[SCW]) as first_SCW, ' + \
+                  'Last(we.EventID) as last_EventID, Last(te.EventDate) as last_event_date, ' + \
+                  'Last(we.Weight) as last_weight, Last(we.[CCL-a]) as last_CCL_a, ' + \
+                  'Last(we.[CCW]) as last_CCW, Last(we.[SCL-a]) as last_SCL_a, ' + \
+                  'Last(we.[SCW]) as last_SCW ' + \
+                  'FROM ((AcWeighing we ' + \
+                  'LEFT JOIN TurtleEvent te ON we.EventID = te.EventID) ' + \
+                  'LEFT JOIN Turtle tu ON te.EventTurtleID = tu.TurtleId) ' + \
+                  'LEFT JOIN Specie sp ON tu.SpecieId = sp.SpecieId ' + \
+                  'WHERE te.EventActivityID = 5 ' + \
+                  'GROUP BY te.EventTurtleID, tu.TurtleName, tu.SpecieId, sp.SpecieNameEng, tu.TurtleGender ' + \
+                  'ORDER BY te.EventTurtleID, tu.TurtleName, tu.SpecieId, sp.SpecieNameEng, tu.TurtleGender) as a ' + \
+                  'INNER JOIN (' + \
+                  'SELECT EventTurtleID, count(*) ' + \
+                  'FROM TurtleEvent ' + \
+                  'WHERE EventActivityID =  ' + str(activity_type) + ' ' \
+                                                                     'GROUP BY EventTurtleID ' + \
+                  'ORDER BY EventTurtleID) as b on (a.EventTurtleID = b.EventTurtleID)'
+        self._db_cursor.execute(sql_str)
+
+        table_rows = []
+        for row in self._db_cursor:
+            table_rows.append(row)
+
+        # s = self.sea_turtles_workbook.sheet_by_name('DataForAnalysis')
         sea_turtles_data = [[]]
-        for row in range(1, s.nrows):
-            if s.cell(row, 2).value in self._species and s.cell(row, 6).value in self._activities:
-                line = []
-                for col in range(s.ncols):
-                    line.append(s.cell(row, col).value)
-                validated_injury_severity = self._validate_injury_severity(self, line[10], _injury_severity)
-                validated_ccla_wt = self._validate_ccla_wt(self, line[13], line[12])
-                validated_scla_scw = self._validate_scla_scw(self, line[20], line[25])
-                validated_ccla_ccw = self._validate_ccla_ccw(self, line[13], line[19])
-                validated_ccw_wt = self._validate_ccw_weight(self, line[19], line[12])
-                line.extend((validated_injury_severity, validated_ccla_wt, validated_scla_scw, validated_ccla_ccw, validated_ccw_wt))
-                sea_turtles_data.append(line)
+        for row in table_rows:
+            line = []
+            for field in self._keys_pos:
+                line.append(row[field])
+            validated_ccla_wt = self._validate_ccla_wt(self, line[3], line[4])
+            line.append(validated_ccla_wt)
+            sea_turtles_data.append(line)
         del sea_turtles_data[0]
 
         return sea_turtles_data
@@ -110,11 +115,11 @@ class Sea_turtles(object):
             return None
 
     @staticmethod
-    def _validate_ccla_wt(self, ccla, weight):
+    def _validate_ccla_wt(self, weight, ccla):
 
         if type(ccla) == float and type(weight) == float:
             if ccla > 0 and weight > 0:
-                return ccla/weight
+                return weight/ccla**2
             else:
                 return None
         else:
@@ -324,5 +329,8 @@ class Sea_turtles(object):
 
 if __name__ == "__main__":
     ts_start = time.time()
-    sea_turtles = Sea_turtles('d:/seaturtles/data/seaturtles.xlsm')
+    db_name = r'''d:\SeaTurtles\db\TurtlesDB_be.mdb'''
+    user = 'admin'
+    password = ''
+    sea_turtles = Sea_turtles(db_name, user, password)
     print('Building Sea Turtles Health Index ended successfully. Total execution time: ' + repr(time.time() - ts_start))
