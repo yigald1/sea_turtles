@@ -29,8 +29,6 @@ class Sea_turtles(object):
         self._weights_general = [100, 0, 0, 0, 0]  # weight by ccl_a_square
         self._rechiv_short_name = ['wt_ccla2', 'ccla_wt', 'scla_scw', 'ccla_ccw', 'ccw_wt']  # injury severity, ccla by weight, scla by scw, ccla by ccw, ccw by weight
         self._db_cursor = self._open_sea_turtles_db(self, db_name, user, password)
-        # self._injury_severity = self._open_injury_severity(self)
-        # self._currently_in_center = self._open_currently_in_center(self)
         self._sea_turtles_data = self._read_sea_turtles_db(self)
         self._sea_turtles_data_standardized = self._standardize_rechivim(self)
         self._sea_turtles_mdd = self._prepare_madad_list(self._sea_turtles_data_standardized)
@@ -86,17 +84,12 @@ class Sea_turtles(object):
                   'SELECT EventTurtleID, count(*) ' + \
                   'FROM TurtleEvent ' + \
                   'WHERE EventActivityID =  ' + str(activity_type) + ' ' \
-                                                                     'GROUP BY EventTurtleID ' + \
+                  'GROUP BY EventTurtleID ' + \
                   'ORDER BY EventTurtleID) as b on (a.EventTurtleID = b.EventTurtleID)'
         self._db_cursor.execute(sql_str)
 
-        table_rows = []
-        for row in self._db_cursor:
-            table_rows.append(row)
-
-        # s = self.sea_turtles_workbook.sheet_by_name('DataForAnalysis')
         sea_turtles_data = [[]]
-        for row in table_rows:
+        for row in self._db_cursor:
             line = []
             for field in self._keys_pos:
                 line.append(row[field])
@@ -108,48 +101,11 @@ class Sea_turtles(object):
         return sea_turtles_data
 
     @staticmethod
-    def _validate_injury_severity(self, injury_cause, injury_severity):
-        if injury_cause in injury_severity:
-            return injury_severity[injury_cause]
-        else:
-            return None
-
-    @staticmethod
     def _validate_ccla_wt(self, weight, ccla):
 
         if type(ccla) == float and type(weight) == float:
             if ccla > 0 and weight > 0:
                 return weight/ccla**2
-            else:
-                return None
-        else:
-            return None
-
-    @staticmethod
-    def _validate_scla_scw(self, scla, scw):
-        if type(scla) == float and type(scw) == float:
-            if scla > 0 and scw > 0:
-                return scla/scw
-            else:
-                return None
-        else:
-            return None
-
-    @staticmethod
-    def _validate_ccla_ccw(self, ccla, ccw):
-        if type(ccla) == float and type(ccw) == float:
-            if ccla > 0 and ccw > 0:
-                return ccla/ccw
-            else:
-                return None
-        else:
-            return None
-
-    @staticmethod
-    def _validate_ccw_weight(self, ccw, weight):
-        if type(ccw) == float and type(weight) == float:
-            if ccw > 0 and weight > 0:
-                return ccw/weight
             else:
                 return None
         else:
