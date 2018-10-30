@@ -29,7 +29,13 @@ class Sea_turtles(object):
         #self._weights_general = [40, 30, 10, 10, 10]   # injury severity, ccla by weight, scla by scw, ccl_a by ccw, ccw by weight
         self._weights_general = [0, 0, 0, 0, 100]  # injury severity, ccla by weight, scla by scw, ccl_a by ccw, ccw by weight
         self._rechiv_short_name = ['is', 'ccla_wt', 'scla_scw', 'ccla_ccw', 'ccw_wt']  # injury severity, ccla by weight, scla by scw, ccla by ccw, ccw by weight
-        self.sea_turtles_workbook = self._open_sea_turtles_workbook(self, sea_turtles_file_name)
+        self.db_cursor = self._open_sea_turtles_workbook(self, sea_turtles_file_name)
+        tables_all = self.db_cursor.tables().fetchall()
+        tables = []
+        for table in tables_all:
+            if table[3] == 'TABLE' and table[2] not in ('ZZZproblems', 'עותק של  TurtleEvent'):
+                # 'עותק של  TurtleEvent'
+                tables.append(table[2])
         self._injury_severity = self._open_injury_severity(self)
         self._currently_in_center = self._open_currently_in_center(self)
         self._sea_turtles_data = self._read_sea_turtles_worksheet(self, self._injury_severity, self._currently_in_center)
@@ -41,15 +47,22 @@ class Sea_turtles(object):
     # def _open_sea_turtles_workbook(self, sea_turtles_file_name):
     #
     #     wb = open_workbook(sea_turtles_file_name)
-    # 
+    #
     #     return wb
 
     @staticmethod
     def _open_sea_turtles_workbook(self, sea_turtles_file_name):
 
-        wb = open_workbook(sea_turtles_file_name)
+        db_file = r'''d:\SeaTurtles\db\TurtlesDB_be.mdb'''
+        user = 'admin'
+        password = ''
 
-        return wb
+        odbc_conn_str = 'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=%s;UID=%s;PWD=%s' % (
+        db_file, user, password)
+        conn = pyodbc.connect(odbc_conn_str)
+        cursor = conn.cursor()
+
+        return cursor
 
     @staticmethod
     def _open_injury_severity(self):
