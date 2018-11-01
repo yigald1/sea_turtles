@@ -97,7 +97,8 @@ class Sea_turtles(object):
             line.append(calculated_madad)
             sea_turtles_data.append(line)
         del sea_turtles_data[0]
-        sea_turtles_data_madad_assiron = self._calculate_assiron(self, sea_turtles_data)
+        sea_turtles_mdd = self._remove_empty_madad(self, sea_turtles_data)
+        sea_turtles_data_madad_assiron = self._calculate_assiron(self, sea_turtles_mdd)
 
         return sea_turtles_data
 
@@ -132,6 +133,16 @@ class Sea_turtles(object):
                 return None
         else:
             return None
+
+    @staticmethod
+    def _remove_empty_madad(self, sea_turtles_mdd):
+
+        sea_turtles = [[]]
+        for line in sea_turtles_mdd:
+            if line[-1] is not None:
+                sea_turtles.append(line)
+        del sea_turtles[0]
+        return sea_turtles
 
     # @staticmethod
     # def _standardize_rechivim(self):
@@ -235,10 +246,10 @@ class Sea_turtles(object):
     #     sea_turtle.append(madad)
     #
     #     return sea_turtle
+    @staticmethod
+    def _calculate_assiron(self, sea_turtles_mdd):
 
-    def calculate_assiron(self, sea_turtles_data):
-
-        sea_turtles_data.sort(key=lambda line: line[len(sea_turtles_mdd) - 1])
+        sea_turtles_mdd.sort(key=lambda line: line[len(sea_turtles_mdd) - 1])
         min_madad = sea_turtles_mdd[0][-1]
         _assiron_size = int(len(sea_turtles_mdd) / 10)
         for serialno, line in enumerate(sea_turtles_mdd):

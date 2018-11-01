@@ -4,6 +4,7 @@
     <list default="true" id="9d950601-faae-4341-882b-3d2038583afc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../db/TurtlesDB_be_test.accdb" afterPath="$PROJECT_DIR$/../../../db/TurtlesDB_be_test.accdb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sea_turtles_health_index.py" afterPath="$PROJECT_DIR$/sea_turtles_health_index.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/t2.py" afterPath="$PROJECT_DIR$/t2.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,8 +19,8 @@
       <file leaf-file-name="codecs.py" pinned="false" current-in-tab="false">
         <entry file="file://C:/Python34/Lib/codecs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="246">
-              <caret line="308" column="0" lean-forward="false" selection-start-line="308" selection-start-column="0" selection-end-line="308" selection-end-column="0" />
+            <state relative-caret-position="212">
+              <caret line="306" column="0" lean-forward="false" selection-start-line="306" selection-start-column="0" selection-end-line="306" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -28,15 +29,15 @@
       <file leaf-file-name="sea_turtles_health_index.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sea_turtles_health_index.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="138">
-              <caret line="240" column="24" lean-forward="false" selection-start-line="240" selection-start-column="24" selection-end-line="240" selection-end-column="24" />
+            <state relative-caret-position="-41">
+              <caret line="251" column="0" lean-forward="false" selection-start-line="251" selection-start-column="0" selection-end-line="251" selection-end-column="0" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
                 <element signature="e#2399#2623#0" expanded="false" />
                 <element signature="e#2688#2917#0" expanded="false" />
                 <element signature="e#2986#3223#0" expanded="false" />
-                <element signature="e#5599#5810#0" expanded="false" />
-                <element signature="e#6565#6580#0" expanded="false" />
+                <element signature="e#5673#5884#0" expanded="false" />
+                <element signature="e#6907#6922#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -55,7 +56,7 @@
       <file leaf-file-name="t1.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/t1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2380">
+            <state relative-caret-position="610">
               <caret line="261" column="31" lean-forward="false" selection-start-line="261" selection-start-column="31" selection-end-line="261" selection-end-column="31" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
@@ -96,8 +97,8 @@
       <file leaf-file-name="t2.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/t2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+            <state relative-caret-position="119">
+              <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -146,11 +147,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/t2.py" />
         <option value="$PROJECT_DIR$/t1.py" />
         <option value="$PROJECT_DIR$/sea_turtles_health_index_2.py" />
         <option value="$PROJECT_DIR$/sea_turtles_health_index_3.py" />
         <option value="$PROJECT_DIR$/t3.py" />
+        <option value="$PROJECT_DIR$/t2.py" />
         <option value="$PROJECT_DIR$/sea_turtles_health_index.py" />
       </list>
     </option>
@@ -158,7 +159,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-6" />
     <option name="y" value="1" />
-    <option name="width" value="1693" />
+    <option name="width" value="1696" />
     <option name="height" value="1015" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -215,24 +216,6 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.sea_turtles_health_index">
-    <configuration default="false" name="t1" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="sea_turtles_health_index" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/t1.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
     <configuration default="false" name="sea_turtles_health_index_2" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -305,6 +288,24 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
+    <configuration default="false" name="t2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="sea_turtles_health_index" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/t2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -370,19 +371,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.t1" />
-      <item index="1" class="java.lang.String" itemvalue="Python.sea_turtles_health_index_2" />
-      <item index="2" class="java.lang.String" itemvalue="Python.t3" />
-      <item index="3" class="java.lang.String" itemvalue="Python.sea_turtles_health_index_3" />
-      <item index="4" class="java.lang.String" itemvalue="Python.sea_turtles_health_index" />
+      <item index="0" class="java.lang.String" itemvalue="Python.sea_turtles_health_index_2" />
+      <item index="1" class="java.lang.String" itemvalue="Python.t3" />
+      <item index="2" class="java.lang.String" itemvalue="Python.sea_turtles_health_index_3" />
+      <item index="3" class="java.lang.String" itemvalue="Python.sea_turtles_health_index" />
+      <item index="4" class="java.lang.String" itemvalue="Python.t2" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.sea_turtles_health_index" />
-        <item index="1" class="java.lang.String" itemvalue="Python.sea_turtles_health_index_2" />
-        <item index="2" class="java.lang.String" itemvalue="Python.t3" />
-        <item index="3" class="java.lang.String" itemvalue="Python.sea_turtles_health_index_3" />
-        <item index="4" class="java.lang.String" itemvalue="Python.t1" />
+        <item index="1" class="java.lang.String" itemvalue="Python.t2" />
+        <item index="2" class="java.lang.String" itemvalue="Python.sea_turtles_health_index_2" />
+        <item index="3" class="java.lang.String" itemvalue="Python.t3" />
+        <item index="4" class="java.lang.String" itemvalue="Python.sea_turtles_health_index_3" />
       </list>
     </recent_temporary>
   </component>
@@ -400,10 +401,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="1" width="1693" height="1015" extended-state="1" />
+    <frame x="-6" y="1" width="1696" height="1015" extended-state="1" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24985093" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24940476" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32969433" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2685083" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -411,7 +412,7 @@
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33701658" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2320442" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -430,26 +431,34 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/t2.py</url>
-          <line>6</line>
-          <option name="timeStamp" value="96" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/t2.py</url>
-          <line>4</line>
-          <option name="timeStamp" value="97" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/t3.py</url>
           <line>51</line>
           <option name="timeStamp" value="136" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/sea_turtles_health_index.py</url>
-          <line>120</line>
-          <option name="timeStamp" value="151" />
+          <line>252</line>
+          <option name="timeStamp" value="157" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/t2.py</url>
+          <line>7</line>
+          <option name="timeStamp" value="161" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/sea_turtles_health_index.py</url>
+          <line>251</line>
+          <option name="timeStamp" value="162" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/sea_turtles_health_index.py</url>
+          <line>260</line>
+          <option name="timeStamp" value="163" />
         </line-breakpoint>
       </breakpoints>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -457,14 +466,15 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="154" />
+      <option name="time" value="164" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="len(ccla_lim)" />
-        <watch expression="weight / ccla ** 2 - turtle_madad_ref" />
-        <watch expression="ccla ** 2" />
-        <watch expression="len(ccla_lim)" />
+        <watch expression="tbls" />
+        <watch expression="tables" />
+        <watch expression="tables_all" />
+        <watch expression="tables_counts" />
+        <watch expression="tables_rows" />
       </configuration>
     </watches-manager>
   </component>
@@ -478,8 +488,8 @@
             <element signature="e#2399#2623#0" expanded="false" />
             <element signature="e#2688#2917#0" expanded="false" />
             <element signature="e#2986#3223#0" expanded="false" />
-            <element signature="e#5599#5810#0" expanded="false" />
-            <element signature="e#6565#6580#0" expanded="false" />
+            <element signature="e#5673#5884#0" expanded="false" />
+            <element signature="e#6907#6922#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -542,8 +552,8 @@
             <element signature="e#2399#2623#0" expanded="false" />
             <element signature="e#2688#2917#0" expanded="false" />
             <element signature="e#2986#3223#0" expanded="false" />
-            <element signature="e#5599#5810#0" expanded="false" />
-            <element signature="e#6565#6580#0" expanded="false" />
+            <element signature="e#5673#5884#0" expanded="false" />
+            <element signature="e#6907#6922#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -606,8 +616,8 @@
             <element signature="e#2399#2623#0" expanded="false" />
             <element signature="e#2688#2917#0" expanded="false" />
             <element signature="e#2986#3223#0" expanded="false" />
-            <element signature="e#5599#5810#0" expanded="false" />
-            <element signature="e#6565#6580#0" expanded="false" />
+            <element signature="e#5673#5884#0" expanded="false" />
+            <element signature="e#6907#6922#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -670,8 +680,8 @@
             <element signature="e#2399#2623#0" expanded="false" />
             <element signature="e#2688#2917#0" expanded="false" />
             <element signature="e#2986#3223#0" expanded="false" />
-            <element signature="e#5599#5810#0" expanded="false" />
-            <element signature="e#6565#6580#0" expanded="false" />
+            <element signature="e#5673#5884#0" expanded="false" />
+            <element signature="e#6907#6922#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -734,8 +744,8 @@
             <element signature="e#2399#2623#0" expanded="false" />
             <element signature="e#2688#2917#0" expanded="false" />
             <element signature="e#2986#3223#0" expanded="false" />
-            <element signature="e#5599#5810#0" expanded="false" />
-            <element signature="e#6565#6580#0" expanded="false" />
+            <element signature="e#5673#5884#0" expanded="false" />
+            <element signature="e#6907#6922#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -798,8 +808,8 @@
             <element signature="e#2399#2623#0" expanded="false" />
             <element signature="e#2688#2917#0" expanded="false" />
             <element signature="e#2986#3223#0" expanded="false" />
-            <element signature="e#5599#5810#0" expanded="false" />
-            <element signature="e#6565#6580#0" expanded="false" />
+            <element signature="e#5673#5884#0" expanded="false" />
+            <element signature="e#6907#6922#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -855,8 +865,8 @@
             <element signature="e#2399#2623#0" expanded="false" />
             <element signature="e#2688#2917#0" expanded="false" />
             <element signature="e#2986#3223#0" expanded="false" />
-            <element signature="e#5599#5810#0" expanded="false" />
-            <element signature="e#6565#6580#0" expanded="false" />
+            <element signature="e#5673#5884#0" expanded="false" />
+            <element signature="e#6907#6922#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -917,14 +927,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/t2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python34/Lib/copy.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1207">
@@ -941,9 +943,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/sea_turtles_health_index_2.py" />
+    <entry file="file://$PROJECT_DIR$/sea_turtles_health_index_3.py" />
+    <entry file="file://$PROJECT_DIR$/t3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="536">
+          <caret line="53" column="26" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="53" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/t1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2380">
+        <state relative-caret-position="610">
           <caret line="261" column="31" lean-forward="false" selection-start-line="261" selection-start-column="31" selection-end-line="261" selection-end-column="31" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
@@ -960,35 +972,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sea_turtles_health_index_2.py" />
-    <entry file="file://$PROJECT_DIR$/sea_turtles_health_index_3.py" />
     <entry file="file://C:/Python34/Lib/codecs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="308" column="0" lean-forward="false" selection-start-line="308" selection-start-column="0" selection-end-line="308" selection-end-column="0" />
+        <state relative-caret-position="212">
+          <caret line="306" column="0" lean-forward="false" selection-start-line="306" selection-start-column="0" selection-end-line="306" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/t3.py">
+    <entry file="file://$PROJECT_DIR$/t2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="536">
-          <caret line="53" column="26" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="53" selection-end-column="26" />
+        <state relative-caret-position="119">
+          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sea_turtles_health_index.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="240" column="24" lean-forward="false" selection-start-line="240" selection-start-column="24" selection-end-line="240" selection-end-column="24" />
+        <state relative-caret-position="-41">
+          <caret line="251" column="0" lean-forward="false" selection-start-line="251" selection-start-column="0" selection-end-line="251" selection-end-column="0" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
             <element signature="e#2399#2623#0" expanded="false" />
             <element signature="e#2688#2917#0" expanded="false" />
             <element signature="e#2986#3223#0" expanded="false" />
-            <element signature="e#5599#5810#0" expanded="false" />
-            <element signature="e#6565#6580#0" expanded="false" />
+            <element signature="e#5673#5884#0" expanded="false" />
+            <element signature="e#6907#6922#0" expanded="false" />
           </folding>
         </state>
       </provider>
