@@ -142,7 +142,7 @@ class Sea_turtles(object):
     @staticmethod
     def _calculate_assiron(self, sea_turtles_mdd):
 
-        sea_turtles_mdd.sort(key=lambda line: line[len(sea_turtles_mdd) - 1])
+        sea_turtles_mdd.sort(key=lambda line: line[len(line) - 1])
         min_madad = sea_turtles_mdd[0][-1]
         _assiron_size = int(len(sea_turtles_mdd) / 10)
         for serialno, line in enumerate(sea_turtles_mdd):
