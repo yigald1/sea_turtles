@@ -29,10 +29,11 @@ class Sea_turtles(object):
         self._weights_general = [100, 0, 0, 0, 0]  # weight by ccl_a_square
         self._rechiv_short_name = ['wt_ccla2', 'ccla_wt', 'scla_scw', 'ccla_ccw', 'ccw_wt']  # injury severity, ccla by weight, scla by scw, ccla by ccw, ccw by weight
         self._db_cursor = self._open_sea_turtles_db(self, db_name, user, password)
-        self._sea_turtles_data = self._read_sea_turtles_db(self)
-        self._sea_turtles_data_standardized = self._standardize_rechivim(self)
-        self._sea_turtles_mdd = self._prepare_madad_list(self._sea_turtles_data_standardized)
-        self._prepare_sea_turtles_output()
+        self._db_cursor = self._read_sea_turtles_db(self)
+        self._sea_turtles_data = self._load_data_to_list(self, self._db_cursor)
+        self._sea_turtles_mdd = self._remove_empty_madad(self, self._sea_turtles_data)
+        self._sea_turtles_data_madad_assiron = self._calculate_assiron(self, self._sea_turtles_mdd)
+        self._prepare_sea_turtles_output(self, self._sea_turtles_data_madad_assiron)
 
     @staticmethod
     def _open_sea_turtles_db(self, db_name, user, password):
@@ -42,24 +43,6 @@ class Sea_turtles(object):
         cursor = conn.cursor()
 
         return cursor
-
-    @staticmethod
-    def _open_injury_severity(self):
-        s = self.sea_turtles_workbook.sheet_by_name('InjurySeverity')
-        injury_types = {}
-        for row in range(1, s.nrows):
-            injury_types[s.cell(row, 0).value] = int(s.cell(row, 1).value)
-
-        return injury_types
-
-    @staticmethod
-    def _open_currently_in_center(self):
-        s = self.sea_turtles_workbook.sheet_by_name('CurrentlyInCenter')
-        currently_in_center = []
-        for row in range(1, s.nrows):
-            currently_in_center.append(int(s.cell(row, 0).value))
-
-        return currently_in_center
 
     @staticmethod
     def _read_sea_turtles_db(self):
@@ -88,19 +71,17 @@ class Sea_turtles(object):
                   'ORDER BY EventTurtleID) as b on (a.EventTurtleID = b.EventTurtleID)'
         self._db_cursor.execute(sql_str)
 
-        sea_turtles_data = [[]]
-        for row in self._db_cursor:
-            line = []
-            for field in self._keys_pos:
-                line.append(row[field])
-            calculated_madad = self._calculate_madad(self, line[3], line[4])
-            line.append(calculated_madad)
-            sea_turtles_data.append(line)
-        del sea_turtles_data[0]
-        sea_turtles_mdd = self._remove_empty_madad(self, sea_turtles_data)
-        sea_turtles_data_madad_assiron = self._calculate_assiron(self, sea_turtles_mdd)
+        # sea_turtles_data = [[]]
+        # for row in self._db_cursor:
+        #     line = []
+        #     for field in self._keys_pos:
+        #         line.append(row[field])
+        #     calculated_madad = self._calculate_madad(self, line[3], line[4])
+        #     line.append(calculated_madad)
+        #     sea_turtles_data.append(line)
+        # del sea_turtles_data[0]
 
-        return sea_turtles_data
+        return self._db_cursor
 
     @staticmethod
     def _validate_ccla_wt(self, weight, ccla):
@@ -112,6 +93,20 @@ class Sea_turtles(object):
                 return None
         else:
             return None
+
+    @staticmethod
+    def _load_data_to_list(self, db_cursor):
+        sea_turtles_data = [[]]
+        for row in db_cursor:
+            line = []
+            for field in self._keys_pos:
+                line.append(row[field])
+            calculated_madad = self._calculate_madad(self, line[3], line[4])
+            line.append(calculated_madad)
+            sea_turtles_data.append(line)
+        del sea_turtles_data[0]
+
+        return sea_turtles_data
 
     @staticmethod
     def _calculate_madad(self, weight, ccla):
@@ -144,108 +139,6 @@ class Sea_turtles(object):
         del sea_turtles[0]
         return sea_turtles
 
-    # @staticmethod
-    # def _standardize_rechivim(self):
-    #
-    #     _rechivim_val_pos = [41, 42, 43, 44, 45]  # position of validated rechivim in _sea_turtles_data
-    #     sea_turtles = []
-    #     curr_keys = []
-    #     keys_source = [[]]
-    #     curr_rechivim = []
-    #     rechivim_source = [[]]
-    #     curr_rechivim_for_standartization = []
-    #     rechivim_for_standartization = [[]]
-    #     rechivim_avg = []
-    #     rechivim_std = []
-    #     curr_standardized_rechivim = []
-    #     standardized_rechivim = [[]]
-    #
-    #     for st_idx, st in enumerate(self._sea_turtles_data):
-    #         for key in range(0, len(self._keys_pos)):
-    #             curr_keys.append(st[self._keys_pos[key]])
-    #         keys_source.append(copy.copy(curr_keys))
-    #         del curr_keys[:]
-    #     del keys_source[0]
-    #
-    #     for st_idx, st in enumerate(self._sea_turtles_data):
-    #         for rechiv in range(0, len(_rechivim_val_pos)):
-    #             curr_rechivim.append(st[_rechivim_val_pos[rechiv]])
-    #         rechivim_source.append(copy.copy(curr_rechivim))
-    #         del curr_rechivim[:]
-    #     del rechivim_source[0]
-    #
-    #     for rechiv_idx in range(0, len(_rechivim_val_pos)):
-    #         for st_idx, st in enumerate(rechivim_source):
-    #             if st[rechiv_idx] is not None:
-    #                 curr_rechivim_for_standartization.append(rechivim_source[st_idx][rechiv_idx])
-    #         rechivim_for_standartization.append(copy.copy(curr_rechivim_for_standartization))
-    #         del curr_rechivim_for_standartization[:]
-    #     del rechivim_for_standartization[0]
-    #
-    #     rechivim_avg = [statistics.mean(rechivim_for_standartization[i]) if self._rechivim_dichotomic[i] == 0 else 0 for i in range(len(self._rechivim_dichotomic))]
-    #     rechivim_std = [statistics.pstdev(rechivim_for_standartization[i]) if self._rechivim_dichotomic[i] == 0 else 0 for i in range(len(self._rechivim_dichotomic))]
-    #
-    #     for st_idx, st in enumerate(rechivim_source):
-    #         for rechiv_idx in range(0, len(_rechivim_val_pos)):
-    #             if self._rechivim_dichotomic[rechiv_idx] != 0:
-    #                 if rechivim_source[rechiv_idx] != 0:
-    #                     curr_standardized_rechivim.append(rechivim_source[st_idx][rechiv_idx])
-    #                 else:
-    #                     curr_standardized_rechivim.append(None)
-    #             else:
-    #                 if rechivim_source[st_idx][rechiv_idx] is None:
-    #                     curr_standardized_rechivim.append(None)
-    #                 else:
-    #                     curr_standardized_rechivim.append(abs((rechivim_source[st_idx][rechiv_idx] - rechivim_avg[rechiv_idx]) / rechivim_std[rechiv_idx]))
-    #                     # curr_standardized_rechivim.append((rechivim_source[st_idx][rechiv_idx] - rechivim_avg[rechiv_idx]) / rechivim_std[rechiv_idx])
-    #         standardized_rechivim.append(copy.copy(curr_standardized_rechivim))
-    #         del curr_standardized_rechivim[:]
-    #     del standardized_rechivim[0]
-    #
-    #     for key_idx, key in enumerate(keys_source):
-    #         sea_turtles.append(keys_source[key_idx] + rechivim_source[key_idx] + standardized_rechivim[key_idx])
-    #
-    #     return sea_turtles
-    #
-    # def _prepare_madad_list(self, standardized_sea_turtles):
-    #     _sea_turtles_mdd = []
-    #     for sea_turtle in standardized_sea_turtles:
-    #         mdd_line = self.calculate_madad(sea_turtle)
-    #         _sea_turtles_mdd.append(mdd_line)
-    #     sea_turtles_mdd = self.calculate_assiron(_sea_turtles_mdd)
-    #
-    #     return sea_turtles_mdd
-
-    # def calculate_madad(self, sea_turtle):
-    #     #  calculate the madad for each sea_turtle
-    #     _rechivim_std_pos = [17, 18, 19, 20, 21]  # position of standardized rechivim in sea_turtles at calculate_madad
-    #     standardized_rechivim_std_pos = []
-    #     for i in range(len(_rechivim_std_pos)):
-    #         standardized_rechivim_std_pos.append(_rechivim_std_pos[i])
-    #
-    #     weights_individual = copy.copy(self._weights_general)
-    #     weights_denominator = 0
-    #     madad = 0
-    #     rechivim = []
-    #
-    #     for rechiv in range(standardized_rechivim_std_pos[0], standardized_rechivim_std_pos[len(standardized_rechivim_std_pos) - 1] + 1):
-    #         rechivim.append(sea_turtle[rechiv])
-    #
-    #     # calculate individual weights for each sea_turtle (depending on missing values)
-    #     for i, rechiv in enumerate(rechivim):
-    #         if rechiv is None or (self._rechivim_dichotomic[i] == 1 and rechiv == 0):
-    #             weights_individual[i] = 0
-    #         else:
-    #             weights_individual[i] = self._weights_general[i]
-    #             weights_denominator += self._weights_general[i]
-    #
-    #     # calculate madad based on individual weights
-    #     for i, rechiv in enumerate(rechivim):
-    #         if weights_individual[i] > 0:
-    #             madad += abs(rechivim[i] * self._rechivim_sign[i] * weights_individual[i] / weights_denominator)
-    #     sea_turtle.append(madad)
-    #
-    #     return sea_turtle
     @staticmethod
     def _calculate_assiron(self, sea_turtles_mdd):
 
@@ -260,58 +153,24 @@ class Sea_turtles(object):
 
         return sea_turtles_mdd
 
-    def _prepare_sea_turtles_output(self):
+    @staticmethod
+    def _prepare_sea_turtles_output(self, sea_turtles_data_madad_assiron):
 
-        calculated_col_headers = ['Validated Injury Cause', 'Validated Total Time Spent', 'Validated CCL-a',
-                                  'Validated CCW', 'Validated Weight', 'Standardized Injury Cause',
-                                  'Standardized Total Time Spent', 'Standardized CCL-a', 'Standardized CCW',
-                                  'Standardized Weight', 'Sea Turtle Health Index', 'Siduri', 'Assiron']
-
-        wbwt = xlwt.Workbook(encoding='utf-8')
-        ma = wbwt.add_sheet('mdd_assiron')
-
-        for col_header_idx, col_header in enumerate(self._keys_pos):
-            ma.write(0, col_header_idx, self.col_headers[self._keys_pos[col_header_idx]])
-
-        for col_header_idx, col_header in enumerate(calculated_col_headers):
-            ma.write(0, len(self._keys_pos) + col_header_idx, calculated_col_headers[col_header_idx])
-
-        for i, sea_turtle_line in enumerate(self._sea_turtles_mdd):
-            for j, sea_turtle_field in enumerate(sea_turtle_line):
-                ma.write(i + 1, j, sea_turtle_field)
-
-        xl_file_name = 'd:\seaturtles\data\SeaTurtles_abs_'
-        for i, rechiv in enumerate(self._weights_general):
-            xl_file_name += self._rechiv_short_name[i] + str(rechiv)
-        xl_file_name += '.xls'
-        wbwt.save(xl_file_name)
-
-        # [ma.write(0, col_header_idx, col_header) for col_header_idx, col_header in enumerate(col_headers)]
-        # [[ma.write(i+1, j, sea_turtle_field) for j, sea_turtle_field in enumerate(sea_turtle_line)]
-        #  for i, sea_turtle_line in enumerate(self._sea_turtles_mdd)]
-
-        del wbwt
-        wbwt = xlwt.Workbook(encoding='utf-8')
-        ma_currently_in_center = wbwt.add_sheet('mdd_assiron_in_center')
-
-        for col_header_idx, col_header in enumerate(self._keys_pos):
-            ma_currently_in_center.write(0, col_header_idx, self.col_headers[self._keys_pos[col_header_idx]])
-
-        for col_header_idx, col_header in enumerate(calculated_col_headers):
-            ma_currently_in_center.write(0, len(self._keys_pos) + col_header_idx, calculated_col_headers[col_header_idx])
-
-        row_out = 1
-        for i, sea_turtle_line in enumerate(self._sea_turtles_mdd):
-            if sea_turtle_line[0] in self._currently_in_center:
-                for j, sea_turtle_field in enumerate(sea_turtle_line):
-                    ma_currently_in_center.write(row_out, j, sea_turtle_field)
-                row_out += 1
-
-        xl_file_name = 'd:\seaturtles\data\SeaTurtles_in_center_abs_'
-        for i, rechiv in enumerate(self._weights_general):
-            xl_file_name += self._rechiv_short_name[i] + str(rechiv)
-        xl_file_name += '.xls'
-        wbwt.save(xl_file_name)
+        try:
+            mdd_file_name = 'd:\seaturtles\data\sea_turtles_mdd.csv'
+            mdd_file = open(mdd_file_name, 'w', encoding='utf-8')
+        except IOError:
+            print('Failed to open madad out file')
+            exit(1)
+        else:
+            col_headers = 'Turtle_id,Turtle_name,Species,Weight,CCL_a,Madad,Siduri,Assiron\n'
+            mdd_file.write(col_headers)
+            for line in sea_turtles_data_madad_assiron:
+                output_rec = ''
+                for sea_turtle_field in line:
+                    output_rec += str(sea_turtle_field) + ','
+                output_rec = ((output_rec.replace('\r', '')).replace('\n', '')).rstrip(',') + '\n'
+                mdd_file.write(output_rec)
 
         return
 
