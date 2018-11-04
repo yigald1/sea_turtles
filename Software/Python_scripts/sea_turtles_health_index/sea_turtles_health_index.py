@@ -32,8 +32,8 @@ class Sea_turtles(object):
         self._db_cursor = self._read_sea_turtles_db(self)
         self._sea_turtles_data = self._load_data_to_list(self, self._db_cursor)
         self._sea_turtles_mdd = self._remove_empty_madad(self, self._sea_turtles_data)
-        self._sea_turtles_data_madad_assiron = self._calculate_assiron(self, self._sea_turtles_mdd)
-        self._prepare_sea_turtles_output(self, self._sea_turtles_data_madad_assiron)
+        # self._sea_turtles_data_madad_assiron = self._calculate_assiron(self, self._sea_turtles_mdd)
+        self._prepare_sea_turtles_output(self, self._sea_turtles_mdd)
 
     @staticmethod
     def _open_sea_turtles_db(self, db_name, user, password):
@@ -70,16 +70,6 @@ class Sea_turtles(object):
                   'GROUP BY EventTurtleID ' + \
                   'ORDER BY EventTurtleID) as b on (a.EventTurtleID = b.EventTurtleID)'
         self._db_cursor.execute(sql_str)
-
-        # sea_turtles_data = [[]]
-        # for row in self._db_cursor:
-        #     line = []
-        #     for field in self._keys_pos:
-        #         line.append(row[field])
-        #     calculated_madad = self._calculate_madad(self, line[3], line[4])
-        #     line.append(calculated_madad)
-        #     sea_turtles_data.append(line)
-        # del sea_turtles_data[0]
 
         return self._db_cursor
 
@@ -146,7 +136,7 @@ class Sea_turtles(object):
         min_madad = sea_turtles_mdd[0][-1]
         _assiron_size = int(len(sea_turtles_mdd) / 10)
         for serialno, line in enumerate(sea_turtles_mdd):
-            line[-1] = line[-1] - min_madad
+            # line[-1] = line[-1] - min_madad
             line.append(serialno + 1)
         for line in sea_turtles_mdd:
             line.append(min(int(int(line[len(line) - 1]) / _assiron_size) + 1, 10))
@@ -163,7 +153,7 @@ class Sea_turtles(object):
             print('Failed to open madad out file')
             exit(1)
         else:
-            col_headers = 'Turtle_id,Turtle_name,Species,Weight,CCL_a,Madad,Siduri,Assiron\n'
+            col_headers = 'Turtle_id,Turtle_name,Species,Weight,CCL_a,Madad\n'
             mdd_file.write(col_headers)
             for line in sea_turtles_data_madad_assiron:
                 output_rec = ''
