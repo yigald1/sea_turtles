@@ -1,2 +1,2 @@
 # sea_turtles
-SQL queries
+SQL queries in queries file
